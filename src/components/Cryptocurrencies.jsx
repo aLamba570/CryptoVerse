@@ -6,7 +6,7 @@ import { useGetCryptosQuery } from "../api/cryptoApi";
 import Loader from "./Loader";
 
 const Cryptocurrencies = ({ simplified }) => {
-  const count = simplified ? 10 : 100;
+  const count = simplified ? 10 : 150;
   const { data: cryptosList, isFetching } = useGetCryptosQuery(count);
   const [cryptos, setCryptos] = useState(cryptosList?.data?.coins);
   const [searchTerm, setSearchTerm] = useState("");
@@ -37,11 +37,19 @@ const Cryptocurrencies = ({ simplified }) => {
       <Row gutter={[32, 32]} className="crypto-card-container">
         {cryptos &&
           cryptos.map((currency) => (
-            <Col xs={24} sm={12} lg={6} className="crypto-card" key={currency.id}>
-              <Link key={currency.uuid} to={`/crypto/${currency.uuid}`}>
+            <Col
+              xs={24}
+              sm={12}
+              lg={6}
+              className="crypto-card"
+              key={currency.id}
+            >
+              <Link to={`/crypto/${currency.uuid}`}>
                 <Card
                   title={`${currency.rank}. ${currency.name}`}
-                  extra={<img className="crypto-image" src={currency.iconUrl} />}
+                  extra={
+                    <img className="crypto-image" src={currency.iconUrl} />
+                  }
                   hoverable
                 >
                   <p>Price: {millify(currency.price)}</p>
