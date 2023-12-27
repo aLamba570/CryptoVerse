@@ -12,13 +12,11 @@ const { Text, Title } = Typography;
 const { Option } = Select;
 
 const News = ({ simplified }) => {
-    const [newsCategory, setNewsCategory] = useState('Cryptocurrency');
-    const { data: cryptoData } = useGetCryptosQuery(100);
-    const { data: cryptoNews, isFetching } = useGetCryptoNewsQuery({ newsCategory, count: simplified ? 6 : 12 });
-    console.log("Crypto News:", cryptoNews);
+  const [newsCategory, setNewsCategory] = useState('Cryptocurrency');
+  const { data } = useGetCryptosQuery(100);
+  const { data: cryptoNews } = useGetCryptoNewsQuery({ newsCategory, count: simplified ? 6 : 12 });
 
-    if (isFetching) return <Loader />;
-    if (!cryptoNews?.data?.value) return <p>No news available.</p>;
+  if (!cryptoNews?.value) return <Loader />;
 
   return (
     <Row gutter={[24, 24]}>
@@ -33,12 +31,11 @@ const News = ({ simplified }) => {
             filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
           >
             <Option value="Cryptocurency">Cryptocurrency</Option>
-            {cryptoData?.data?.coins?.map((currency) => <Option value={currency.name}>{currency.name}</Option>)}
-
+            {data?.data?.coins?.map((currency) => <Option value={currency.name}>{currency.name}</Option>)}
           </Select>
         </Col>
       )}
-      {cryptoNews.data.value.map((news, i) => (
+      {cryptoNews.value.map((news, i) => (
         <Col xs={24} sm={12} lg={8} key={i}>
           <Card hoverable className="news-card">
             <a href={news.url} target="_blank" rel="noreferrer">
